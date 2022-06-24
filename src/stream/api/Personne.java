@@ -1,6 +1,7 @@
 package stream.api;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Personne {
@@ -12,6 +13,14 @@ public class Personne {
         this.id = id;
         this.genre = genre;
         this.taille = taille;
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+    public Integer getTaille(){
+        return this.taille;
     }
 
     public static void main(String[] args) {
@@ -37,12 +46,21 @@ public class Personne {
         }
         System.out.println(String.format("La taille moyenne des femmes est %.3f", sommeTaille/totalFemmes));
 
-        //Using Streams
+        // Using Streams
         double tailleMoyenneStream = personnes.stream()
                 .filter(personne -> personne.genre == Genre.FEMME)
                 .mapToInt(p -> p.taille)
                 .average()
                 .orElse(0);
         System.out.println(String.format("La taille moyenne des femmes avec stream est %.3f", tailleMoyenneStream));
+
+
+        // Get masculine persons ids
+        personnes.stream()
+                .filter(personne -> personne.genre == Genre.HOMME)
+                .sorted(Comparator.comparingInt(Personne::getTaille).reversed())
+                .map(Personne::getId)
+                //.map(personne -> personne.id)
+                .forEach(System.out::println);
     }
 }
