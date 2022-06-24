@@ -20,5 +20,12 @@ public class Test {
                 .mapToInt(i -> i)
                 .sum();
         System.out.println(sommeM2);
+
+        // Third Method
+        long sommeM3 = entiers.parallelStream()
+                .filter(v -> v < 10)
+                .mapToInt(i -> i)
+                .sum();
+        System.out.println(sommeM3);
     }
 }
