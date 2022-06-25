@@ -1,8 +1,10 @@
 package stream.api;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -73,5 +75,33 @@ public class Test {
 
         //String str = "chaine1,chaine2,chaine3";
         //Pattern.compile(",").splitAsStream(str).forEach(System.out::println);
+
+//        System.out.println("--------");
+//        List<Integer> list = new ArrayList<>();
+//        List<Integer> result = Stream.of(1, 2, 3, 4)
+//                .peek(x -> list.add(x))
+//                .map(x -> x * 2)
+//                .collect(Collectors.toList());
+//
+//        System.out.println(list);
+//        System.out.println(result);
+
+
+
+        // Map vs flatMap
+        System.out.println("------ Map");
+        List<Integer> numbers = Arrays.asList(1, 3, 5, 7, 9);
+        List<List<Integer>> tuples =
+                numbers.stream()
+                        .map(nombre -> Arrays.asList(nombre - 1, nombre))
+                        .collect(Collectors.toList());
+        System.out.println(tuples);
+
+        System.out.println("------ FlatMap");
+        List<Integer> nombresDesTuples =
+                numbers.stream()
+                        .flatMap(nombre -> Arrays.asList(nombre - 1, nombre).stream())
+                        .collect(Collectors.toList());
+        System.out.println(nombresDesTuples);
     }
 }
