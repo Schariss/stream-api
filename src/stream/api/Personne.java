@@ -24,12 +24,44 @@ public class Personne {
         this.nom = nom;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        // If the object is compared with itself then return true
+        if (obj == this)
+            return true;
+        if(!this.id.equals(((Personne) obj).getId())
+                || !this.nom.equals(((Personne) obj).getNom())
+                // Same Person but height has changed
+                // || this.taille.intValue() != ((Personne) obj).getTaille().intValue()
+                || this.genre != ((Personne) obj).getGenre()
+        )
+            return false;
+        if(obj == null)
+            return false;
+        if(obj.getClass() != this.getClass())
+            return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+        result = prime * result + ((genre == null) ? 0 : genre.toString().hashCode());
+        return result;
+    }
+
     public String getId() {
         return this.id;
     }
 
     public Integer getTaille() {
         return this.taille;
+    }
+    public Genre getGenre() {
+        return this.genre;
     }
 
     public String getNom() {
