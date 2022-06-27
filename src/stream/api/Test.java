@@ -1,8 +1,8 @@
 package stream.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -90,7 +90,7 @@ public class Test {
 
 
         // Map vs flatMap
-        System.out.println("------ Map");
+        System.out.println("------------------ Map");
         List<Integer> numbers = Arrays.asList(1, 3, 5, 7, 9);
         List<List<Integer>> tuples =
                 numbers.stream()
@@ -98,7 +98,7 @@ public class Test {
                         .collect(Collectors.toList());
         System.out.println(tuples);
 
-        System.out.println("------ FlatMap");
+        System.out.println("------------------ FlatMap");
         List<Integer> nombresDesTuples =
                 numbers.stream()
                         .flatMap(nombre -> Arrays.asList(nombre - 1, nombre).stream())
@@ -110,10 +110,63 @@ public class Test {
         List<String> prenoms = Arrays.asList("andre", "benoit", "albert", "thierry", "alain");
         Supplier<Stream<String>> prenomsStream = () -> prenoms.stream();
 
-        System.out.println("------ Sorted");
+        System.out.println("------------------ Sorted");
         prenomsStream.get().sorted().forEach(System.out::println);
 
-        System.out.println("------ Supplier");
+        System.out.println("------------------ Supplier");
         prenomsStream.get().filter(p -> p.startsWith("a")).sorted().forEach(System.out::println);
+
+
+
+        System.out.println("------------------ forEach() and forEachOrdered()");
+        Consumer<String> afficherElement = s -> System.out.println(s + " - " +
+                Thread.currentThread().getName());
+        prenoms.stream().sorted().forEach(afficherElement);
+        System.out.println();
+        prenoms.parallelStream().sorted().forEach(afficherElement);
+        System.out.println();
+        prenoms.parallelStream().sorted().forEachOrdered(afficherElement);
+
+
+
+        System.out.println("\n------------------ collect() Method");
+        List<String> elements = Arrays.asList("elem1", "elem2", "elem2", "elem3", "elem4");
+        // <R> R collect(Supplier<R> resultSupplier, BiConsumer<R, T> accumulator, BiConsumer<R, R> combiner)
+        // supplier : provide an instance of the empty container
+        // accumulator : add an element in the container
+        // combiner : combine two containers when using the parallel stream
+        Set<String> ensemble = elements.stream()
+                .collect(() -> new LinkedHashSet<>(),
+                        (s, e) -> s.add(e),
+                        (s1, s2) -> s1.addAll(s2));
+        // Or
+        // Set<String> ensemble = elements.stream()
+        // .collect(LinkedHashSet::new,
+        //      LinkedHashSet::add,
+        //      LinkedHashSet::addAll);
+        System.out.println(ensemble);
+
+        System.out.println("------------------ BiConsumer()");
+        BiConsumer<Boolean, Integer> isEven = (is, x) -> {
+            if(is){
+                System.out.println(String.format("Le nombre %d est paire", x));
+            }else
+                System.out.println(String.format("Le nombre %d est impaire", x));
+        };
+        Integer x = 8;
+        isEven.accept(x % 2 == 0, x);
+
+        System.out.println("------------------ StringBuilder");
+        StringBuilder elmtSb =
+                elements.stream()
+                        .collect(() -> new StringBuilder(),
+                                (sb, s) -> {
+                                    if (sb.length() != 0) {
+                                        sb.append(";");
+                                    }
+                                    sb.append(s);
+                                },
+                                (sb1, sb2) -> sb1.append(";").append(sb2));
+        System.out.println(elmtSb);
     }
 }
