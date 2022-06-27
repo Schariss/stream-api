@@ -3,6 +3,7 @@ package stream.api;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -103,5 +104,16 @@ public class Test {
                         .flatMap(nombre -> Arrays.asList(nombre - 1, nombre).stream())
                         .collect(Collectors.toList());
         System.out.println(nombresDesTuples);
+
+
+
+        List<String> prenoms = Arrays.asList("andre", "benoit", "albert", "thierry", "alain");
+        Supplier<Stream<String>> prenomsStream = () -> prenoms.stream();
+
+        System.out.println("------ Sorted");
+        prenomsStream.get().sorted().forEach(System.out::println);
+
+        System.out.println("------ Supplier");
+        prenomsStream.get().filter(p -> p.startsWith("a")).sorted().forEach(System.out::println);
     }
 }
