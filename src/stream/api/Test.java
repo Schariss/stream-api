@@ -168,5 +168,13 @@ public class Test {
                                 },
                                 (sb1, sb2) -> sb1.append(";").append(sb2));
         System.out.println(elmtSb);
+
+        System.out.println("------------------ StringJoiner");
+        StringJoiner elmtJoiner =
+                elements.stream()
+                        .collect(() -> new StringJoiner(";"),
+                                (j, e) -> j.add(e),
+                                (j1, j2) -> j1.merge(j2));
+        System.out.println(elmtJoiner.toString());
     }
 }
