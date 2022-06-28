@@ -224,5 +224,15 @@ public class Test {
             resultat = accumulator.apply(resultat, e);
         }
         System.out.println("Taille totale = " + tailleTotale);
+
+
+
+        System.out.println("------------------ min() and max()");
+        Optional<String> plusPetitPrenom =
+                prenoms.stream().min(Comparator.comparing(element -> element.length()));
+        // Same as; using Method reference
+        // Optional<String> plusPetitPrenom =
+        //                prenoms.stream().min(Comparator.comparing(element -> element.length()));
+        System.out.println(plusPetitPrenom.orElseGet(() -> "aucun prenom trouve"));
     }
 }
