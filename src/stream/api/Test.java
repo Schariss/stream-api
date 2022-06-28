@@ -175,6 +175,9 @@ public class Test {
                                 (j1, j2) -> j1.merge(j2));
         System.out.println(elmtJoiner.toString());
 
+        System.out.println("------------------ joining from Collectors");
+        System.out.println(elements.stream().collect(Collectors.joining(";")));
+
 
         System.out.println("------------------ reduce");
         List<Personne> personnes = new Departement("Mathématiques").getPersonnes();
