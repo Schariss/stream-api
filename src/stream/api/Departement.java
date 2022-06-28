@@ -14,6 +14,17 @@ public class Departement {
         this.personnes = personnes;
     }
 
+    public Departement(String nom){
+        this.nom = nom;
+        this.personnes = Arrays.asList(
+                new Personne("P1", "Adnane", Genre.HOMME, 176),
+                new Personne("P2", "Aimad", Genre.HOMME, 176),
+                new Personne("P3", "Aissam", Genre.HOMME, 190),
+                new Personne("P4", "Imane", Genre.FEMME, 172),
+                new Personne("P5", "Widad", Genre.FEMME, 162),
+                new Personne("P6", "Amina", Genre.FEMME, 168));
+    }
+
     public String getNom(){
         return this.nom;
     }

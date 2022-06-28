@@ -1,9 +1,7 @@
 package stream.api;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -176,5 +174,55 @@ public class Test {
                                 (j, e) -> j.add(e),
                                 (j1, j2) -> j1.merge(j2));
         System.out.println(elmtJoiner.toString());
+
+
+        System.out.println("------------------ reduce");
+        List<Personne> personnes = new Departement("Mathématiques").getPersonnes();
+        personnes.stream()
+//                .mapToInt(Personne::getTaille)
+//                .reduce((p1, p2) -> p1 > p2? p1: p2)
+                .reduce((p1, p2) -> p1.getTaille() > p2.getTaille()? p1: p2)
+                .ifPresent(System.out::println);
+
+        System.out.println("------------------ reduce using BinaryOperator");
+        Comparator<Personne> comparerTaille = Comparator.comparingInt(Personne::getTaille);
+        BinaryOperator<Personne> tailleMax = BinaryOperator.maxBy(comparerTaille);
+        personnes.stream().reduce(tailleMax).ifPresent(System.out::println);
+
+        System.out.println("------------------ reduce concat Strings");
+        Stream.of("a", "b", "c", "d")
+                .reduce((accumulator, item) -> accumulator + item)
+                .ifPresent(System.out::println);
+
+        System.out.println("------------------ reduce max int");
+        System.out.println("------------------ M1");
+        System.out.println(Stream.of(1, 2, 3, 4, 5)
+                .mapToInt(i -> i)
+                .max());
+        System.out.println("------------------ M2");
+        System.out.println(Stream.of(1, 2, 3, 4, 5)
+                .reduce((i1, i2) -> i1 < i2? i2: i1));
+        System.out.println("------------------ M3");
+        System.out.println(Stream.of(1, 2, 3, 4, 5)
+                .reduce((i1, i2) -> i1 < i2? i2: i1));
+        System.out.println("------------------ M4");
+        System.out.println(Stream.of(1, 2, 3, 4, 5)
+                .reduce(0, Integer::max));
+
+        System.out.println("------------------ reduce");
+        // <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator, BinaryOperator<U> combiner)
+        Integer tailleTotale = personnes.stream()
+                .reduce(0, (somme, e) -> somme += e.getTaille(),
+                        (somme1, somme2) -> somme1 + somme2);
+        System.out.println("Taille totale = " + tailleTotale);
+
+        System.out.println("------------------ Lambda functions");
+        // The code above is the same as the following
+        BiFunction<Integer, Personne, Integer> accumulator = (somme, e) -> somme += e.getTaille();
+        Integer resultat = 0;
+        for (Personne e : personnes) {
+            resultat = accumulator.apply(resultat, e);
+        }
+        System.out.println("Taille totale = " + tailleTotale);
     }
 }
