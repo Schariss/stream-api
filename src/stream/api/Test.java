@@ -234,5 +234,13 @@ public class Test {
         // Optional<String> plusPetitPrenom =
         //                prenoms.stream().min(Comparator.comparing(element -> element.length()));
         System.out.println(plusPetitPrenom.orElseGet(() -> "aucun prenom trouve"));
+
+
+
+        System.out.println("------------------ iterator");
+        Iterator<String> prenomsIterator = prenomsStream.get().iterator();
+        while(prenomsIterator.hasNext()){
+            System.out.println(prenomsIterator.next());
+        }
     }
 }
