@@ -259,5 +259,9 @@ public class Test {
                         Function.identity(),
                         (s1, s2) -> String.join(";", s1, s2)));
         System.out.println(resultats);
+
+        System.out.println("------------------ joining from Collectors");
+        // concatenate elements of a  Stream<String>
+        System.out.println(elements.stream().collect(Collectors.joining(";", "[", "]")));
     }
 }
