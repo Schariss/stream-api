@@ -250,7 +250,14 @@ public class Test {
 
         System.out.println("------------------ Function example");
         Function<String, Integer> calculateLength = (word) -> word.length();
-        System.out.println(calculateLength.apply("Adnane"));
+        System.out.println("La longueur du mot est " + calculateLength.apply("Adnane"));
 
+        System.out.println("------------------ toMap from Collectors");
+        // mergeFunction tu deal with duplicate keys
+        Map<Integer, String> resultats =
+                elements.stream().collect(Collectors.toMap(String::length,
+                        Function.identity(),
+                        (s1, s2) -> String.join(";", s1, s2)));
+        System.out.println(resultats);
     }
 }
