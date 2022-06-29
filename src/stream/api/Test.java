@@ -245,5 +245,12 @@ public class Test {
         while(prenomsIterator.hasNext()){
             System.out.println(prenomsIterator.next());
         }
+
+
+
+        System.out.println("------------------ Function example");
+        Function<String, Integer> calculateLength = (word) -> word.length();
+        System.out.println(calculateLength.apply("Adnane"));
+
     }
 }
