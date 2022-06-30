@@ -263,5 +263,10 @@ public class Test {
         System.out.println("------------------ joining from Collectors");
         // concatenate elements of a  Stream<String>
         System.out.println(elements.stream().collect(Collectors.joining(";", "[", "]")));
+
+        System.out.println("------------------ summarizingDouble from Collectors");
+        IntSummaryStatistics statistics = personnes.stream()
+                .collect(Collectors.summarizingInt(Personne::getTaille));
+        System.out.println(statistics);
     }
 }
