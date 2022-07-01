@@ -268,5 +268,34 @@ public class Test {
         IntSummaryStatistics statistics = personnes.stream()
                 .collect(Collectors.summarizingInt(Personne::getTaille));
         System.out.println(statistics);
+
+
+        System.out.println("------------------ groupingBy from Collectors ex1");
+        Supplier<Stream<String>> characters = () -> Stream.of("aaa", "bb", "ccccc", "dd");
+        System.out.println(
+                characters.get().collect(Collectors.groupingBy(
+                        String::length,
+                        Collectors.toList()
+                ))
+        );
+        System.out.println(
+                characters.get().collect(Collectors.groupingBy(
+                        String::length))
+        );
+        System.out.println("------------------ partitioningBy from Collectors");
+        // partitioningBy is a specialisation of groupingBy method; returns a boolean as key map
+        Map<Boolean, List<String>> map = characters.get().collect(Collectors.partitioningBy(s -> s.length() >= 3));
+        for (Map.Entry entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ", " + entry.getValue());
+        }
+
+        System.out.println("------------------ groupingBy with mapping from Collectors ex2");
+        Map<Genre, Set<String>> nomsGroupesParGenre
+                = personnes.stream()
+                .collect(Collectors.groupingBy(
+                        Personne::getGenre,
+                        Collectors.mapping(Personne::getNom, Collectors.toSet())
+                ));
+        System.out.println(nomsGroupesParGenre);
     }
 }
